@@ -3,26 +3,11 @@
 //             ' | |'
 // );
 
-// process.stdin.setEncoding('utf8');
-
-// process.stdin.on('readable', () => {
-//   var chunk = process.stdin.read();
-//   if (chunk !== null) {
-//     process.stdout.write(`data: ${chunk}`);
-//   }
-// });
-
-// process.stdin.on('end', () => {
-//   process.stdout.write('end');
-// });
-
-
-
-function ask(question, format, callback) {
+function ask(board, format, callback) {
  var stdin = process.stdin, stdout = process.stdout;
  
  stdin.resume();
- stdout.write(question + '_|_|_' + '\n' + '_|_|_' + '\n' + ' | |');
+ stdout.write(board + '_|_|_' + '\n' + '_|_|_' + '\n' + ' | | \n');
  
  stdin.once('data', function(data) {
    data = data.toString().trim();
@@ -31,15 +16,19 @@ function ask(question, format, callback) {
      callback(data);
    } else {
      stdout.write("It should match: "+ format +"\n");
-     ask(question, format, callback);
+     ask(board, format, callback);
    }
  });
 }
 
-ask("Player 1 \n", /.+/, function(name) {
-  ask("Player 2 \n", /^.+@.+$/, function(email) {
-    console.log("Your name is: ", name);
-    console.log("Your email is:", email);
+// input 1 - 9 for location
+// recursive call till base case is satisfied / someone won / 3 in a row
+
+
+ask("\n Player 1 \n", /.+/, function(turn1) {
+  console.log("\n Turn 1: \n", turn1);
+  ask("\n Player 2 \n", /.+/, function(turn2) {
+    console.log("\n Turn 2: \n", turn2);
  
     process.exit();
   });
